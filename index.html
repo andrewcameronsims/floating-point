@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Floating Point Encoding</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>How does floating point encoding work?</h1>
+    <div class="bit-representation">
+      <span id="sign">
+        <span class="bit">0</span>
+      </span>
+
+      <span id="exponent">
+        <span class="bit">0</span>
+        <span class="bit">0</span>
+        <span class="bit">0</span>
+      </span>
+
+      <span id="mantissa">
+        <span class="bit">0</span>
+        <span class="bit">0</span>
+        <span class="bit">0</span>
+        <span class="bit">0</span>
+      </span>
+    </div>
+    <h2>Encoding form: <span id="form"></span></h2>
+    <h2>Real value: <span id="real-value"></span></h2>
+    <h3>Sign value: <span id="sign-value"></span></h3>
+    <h3>Exponent value: <span id="exponent-value"></span></h3>
+    <h3>Mantissa value: <span id="mantissa-value"></span></h3>
+  </div>
+  <script src="index.js"></script>
+</body>
+</html>
