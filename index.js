@@ -14,16 +14,17 @@ const getBits = (domId) => {
 const renderValues = () => {
   const sign = parseInt(getBits('sign'), 2)
   const exponent = parseInt(getBits('exponent'), 2)
-  const mantissa = bitsToMantissa(getBits('mantissa'))
-  formSpan.innerText = floatingPointForm(exponent)
+  const form = floatingPointForm(exponent)
+  const mantissa = bitsToMantissa(getBits('mantissa'), form === 'Normalised')
+  formSpan.innerText = form
   signValueSpan.innerText = sign
   exponentValueSpan.innerText = exponent
   mantissaValueSpan.innerText = mantissa
   realValueSpan.innerText = computeRealValue(sign, exponent, mantissa)
 }
 
-const bitsToMantissa = (bits) => {
-  let mantissa = 1
+const bitsToMantissa = (bits, isNormalised) => {
+  let mantissa = isNormalised ? 1 : 0
   bits.split('').forEach((bit, index) => {
     if (bit == 1) {
       mantissa += Math.pow(0.5, index + 1)
@@ -51,13 +52,25 @@ const computeRealValue = (sign, exponent, mantissa) => {
       value = 0
       break
     case 'Special':
-      value = 0
+      value = computeSpecial(sign)
       break
     default:
-      value = (Math.pow(-1.0, sign) * mantissa * Math.pow(2.0, exponent))
+      value = computeNormalised(sign, exponent, mantissa)
       break
   }
   return value
+}
+
+const computeSpecial = (sign) => {
+  if (getBits('mantissa').includes('1')) {
+    return'NaN'
+  } else {
+    return (sign == '0' ? '+' : '-').concat('∞')
+  }
+}
+
+const computeNormalised = (sign, exponent, mantissa) => {
+  return Math.pow(-1.0, sign) * mantissa * Math.pow(2.0, exponent)
 }
 
 bits.forEach((node) => {
