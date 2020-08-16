@@ -29,13 +29,17 @@ class FloatingPointNumber {
         break;
 
       case FPTypes.DENORMALISED:
-        return Math.pow(-1, this.sign) * this.fraction * Math.pow(2, this.exponentValue());
+        return Math.pow(-1, this.sign[0]) * this.fractionValue() * Math.pow(2, this.exponentValue());
         break;
 
       default:
-        return Math.pow(-1, this.sign) * (1 + this.fraction) * Math.pow(2, this.exponentValue());
+        return Math.pow(-1, this.sign[0]) * (1 + this.fractionValue()) * Math.pow(2, this.exponentValue());
         break;
     }
+  }
+
+  fractionValue = () => {
+    return 0.5;
   }
 
   special = () => {
@@ -60,71 +64,24 @@ class FloatingPointNumber {
 
 
 const getBits = (domId) => {
-  const parentElement = document.querySelector('#' + domId)
-  const bits = [...parentElement.querySelectorAll('.bit')].map(node => node.innerText)
-  return bits.join('')
+  const parentElement = document.querySelector('#' + domId);
+  const bits = [...parentElement.querySelectorAll('.bit')].map(node => node.innerText);
+  return bits;
 }
 
-const renderValues = () => {
-  const sign = parseInt(getBits('sign'), 2)
-  const exponent = parseInt(getBits('exponent'), 2)
-  const form = floatingPointForm(exponent)
-  const mantissa = bitsToMantissa(getBits('mantissa'), form === 'Normalised')
-  formSpan.innerText = form
-  signValueSpan.innerText = sign
-  exponentValueSpan.innerText = exponent
-  mantissaValueSpan.innerText = mantissa
-  realValueSpan.innerText = computeRealValue(sign, exponent, mantissa)
+const refreshFloatingPoint = () => {
+  const bits = [...document.querySelectorAll('.bit')].map(node => node.innerText);
+  const sign = bits[0];
+  const exponent = bits.slice(1, 4);
+  const fraction = bits.slice(4);
+  const floatingPoint = new FloatingPointNumber(sign, exponent, fraction);
+  return floatingPoint;
 }
 
-const bitsToMantissa = (bits, isNormalised) => {
-  let mantissa = isNormalised ? 1 : 0
-  bits.split('').forEach((bit, index) => {
-    if (bit == 1) {
-      mantissa += Math.pow(0.5, index + 1)
-    }
-  })
-  return mantissa
-}
-
-const floatingPointForm = (exponent) => {
-  switch (exponent) {
-    case 0:
-      return 'Denormalised'
-    case 7:
-      return 'Special'
-    default:
-      return 'Normalised'
-  }
-}
-
-const computeRealValue = (sign, exponent, mantissa) => {
-  const form = floatingPointForm(exponent)
-  let value
-  switch (form) {
-    case 'Denormalised':
-      value = 0
-      break
-    case 'Special':
-      value = computeSpecial(sign)
-      break
-    default:
-      value = computeNormalised(sign, exponent, mantissa)
-      break
-  }
-  return value
-}
-
-const computeSpecial = (sign) => {
-  if (getBits('mantissa').includes('1')) {
-    return'NaN'
-  } else {
-    return (sign == '0' ? '+' : '-').concat('∞')
-  }
-}
-
-const computeNormalised = (sign, exponent, mantissa) => {
-  return Math.pow(-1.0, sign) * mantissa * Math.pow(2.0, exponent)
+const renderFloatingPoint = (fp) => {
+  signValueSpan.innerText = Math.pow(-1, fp.sign[0]);
+  realValueSpan.innerText = fp.value;
+  formSpan.innerText = fp.type;
 }
 
 bits.forEach((node) => {
@@ -135,8 +92,10 @@ bits.forEach((node) => {
     } else {
       e.target.innerText = '1'
     }
-    renderValues()
+    const fp = refreshFloatingPoint()
+    renderFloatingPoint(fp)
   })
 })
 
-renderValues()
+const fp = refreshFloatingPoint()
+renderFloatingPoint(fp)
