@@ -5,33 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Floating Point Encoding</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
   <div class="container">
     <h1>How does floating point encoding work?</h1>
-    <div class="bit-representation">
-      <span id="sign">
-        <span class="bit">0</span>
-      </span>
 
-      <span id="exponent">
-        <span class="bit">0</span>
-        <span class="bit">0</span>
-        <span class="bit">0</span>
-      </span>
+    <p>
+      The floating point standard bit-encodes real numbers in the form
+      <h2>\[V = -1^S * F * 2^E\]</h2>
+      It does so by dividing up the allocated memory space into a <span class="sign-color">sign bit</span>, <span class="exponent-color">exponent bits</span>, and <span class="fraction-color">fractional bits</span>.
+    </p>
+    <p>
+      Below is a binary representation of a floating point number for a fictional 8-bit computer. Try flipping different bits to see how they affect the value of the encoded number.
+    </p>
 
-      <span id="fraction">
-        <span class="bit">0</span>
-        <span class="bit">0</span>
-        <span class="bit">0</span>
-        <span class="bit">0</span>
-      </span>
+    <div class="bit-representation-container">
+      <div id="bit-representation">
+        <span id="sign">
+          <span class="bit">0</span>
+        </span>
+
+        <span id="exponent">
+          <span class="bit">0</span>
+          <span class="bit">0</span>
+          <span class="bit">0</span>
+          <span class="bit">0</span>
+        </span>
+
+        <span id="fraction">
+          <span class="bit">0</span>
+          <span class="bit">0</span>
+          <span class="bit">0</span>
+        </span>
+      </div>
+
+      <h2>Encoding form: <span id="form"></span></h2>
+      <h2>-1<sup><span class="sign-color" id="sign-value"></span></sup> * <span class="fraction-color" id="fraction-value"></span> * 2<sup><span id="exponent-value" class="exponent-color"></span></sup> = <span id="real-value"></span></h2>
     </div>
-    <h2>Encoding form: <span id="form"></span></h2>
-    <h2>Real value: <span id="real-value"></span></h2>
-    <h3>Sign value: <span id="sign-value"></span></h3>
-    <h3>Exponent value: <span id="exponent-value"></span></h3>
-    <h3>Fraction value: <span id="fraction-value"></span></h3>
+    <div>
+      <p>Made by <a href="https://www.andysims.dev">Andrew Sims</a></p>
+    </div>
   </div>
   <script src="index.js"></script>
 </body>

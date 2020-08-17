@@ -85,11 +85,11 @@ const refreshFloatingPoint = () => {
 }
 
 const renderFloatingPoint = (fp) => {
-  signValueSpan.innerText = Math.pow(-1, fp.sign[0]);
+  signValueSpan.innerText = fp.sign[0];
   formSpan.innerText = fp.type;
   realValueSpan.innerText = fp.value;
   exponentValueSpan.innerText = fp.exponentValue();
-  fractionValueSpan.innerText = fp.fractionValue();
+  fractionValueSpan.innerText = fp.type == FPTypes.NORMALISED ? 1 + fp.fractionValue() : fp.fractionValue();
 }
 
 bits.forEach((node) => {
