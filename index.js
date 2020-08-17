@@ -1,6 +1,6 @@
 const signValueSpan = document.querySelector('#sign-value')
 const exponentValueSpan = document.querySelector('#exponent-value')
-const mantissaValueSpan = document.querySelector('#mantissa-value')
+const fractionValueSpan = document.querySelector('#fraction-value')
 const realValueSpan = document.querySelector('#real-value')
 const formSpan = document.querySelector('#form')
 const bits = document.querySelectorAll('.bit')
