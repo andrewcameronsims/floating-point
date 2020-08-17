@@ -6,9 +6,9 @@ const formSpan = document.querySelector('#form')
 const bits = document.querySelectorAll('.bit')
 
 const FPTypes = {
-  NORMALISED: 'normalised',
-  DENORMALISED: 'denormalised',
-  SPECIAL: 'special'
+  NORMALISED: 'Normalised',
+  DENORMALISED: 'Denormalised',
+  SPECIAL: 'Special'
 };
 
 class FloatingPointNumber {
@@ -18,7 +18,7 @@ class FloatingPointNumber {
     this.fraction = fraction;
 
     this.type = this.type();
-    this.exponentBias = Math.pow(2, this.size - 1) - 1;
+    this.exponentBias = Math.pow(2, this.exponent.length - 1) - 1;
     this.value = this.value();
   }
 
@@ -39,7 +39,13 @@ class FloatingPointNumber {
   }
 
   fractionValue = () => {
-    return 0.5;
+    let total = 0
+    let fraction = 0.5
+    this.fraction.forEach(bit => {
+      if (bit == 1) total += fraction;
+      fraction /= 2;
+    });
+    return total
   }
 
   special = () => {
@@ -49,9 +55,9 @@ class FloatingPointNumber {
   }
 
   exponentValue = () => {
-    if (this.type == FPTypes.DENORMALISED) return 1 - this.bias;
+    if (this.type == FPTypes.DENORMALISED) return 1 - this.exponentBias;
 
-    return parseInt(this.exponent.join(''), 2) - this.bias;
+    return parseInt(this.exponent.join(''), 2) - this.exponentBias;
   }
 
   type = () => {
@@ -71,7 +77,7 @@ const getBits = (domId) => {
 
 const refreshFloatingPoint = () => {
   const bits = [...document.querySelectorAll('.bit')].map(node => node.innerText);
-  const sign = bits[0];
+  const sign = bits.slice(0, 1);
   const exponent = bits.slice(1, 4);
   const fraction = bits.slice(4);
   const floatingPoint = new FloatingPointNumber(sign, exponent, fraction);
