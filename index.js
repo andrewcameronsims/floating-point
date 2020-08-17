@@ -49,7 +49,7 @@ class FloatingPointNumber {
   }
 
   special = () => {
-    if (this.fraction.every(val => val == 1)) return 'Infinity'
+    if (this.fraction.every(val => val == 0)) return '∞'
 
     return 'NaN'
   }
@@ -78,16 +78,18 @@ const getBits = (domId) => {
 const refreshFloatingPoint = () => {
   const bits = [...document.querySelectorAll('.bit')].map(node => node.innerText);
   const sign = bits.slice(0, 1);
-  const exponent = bits.slice(1, 4);
-  const fraction = bits.slice(4);
+  const exponent = bits.slice(1, 5);
+  const fraction = bits.slice(5);
   const floatingPoint = new FloatingPointNumber(sign, exponent, fraction);
   return floatingPoint;
 }
 
 const renderFloatingPoint = (fp) => {
   signValueSpan.innerText = Math.pow(-1, fp.sign[0]);
-  realValueSpan.innerText = fp.value;
   formSpan.innerText = fp.type;
+  realValueSpan.innerText = fp.value;
+  exponentValueSpan.innerText = fp.exponentValue();
+  fractionValueSpan.innerText = fp.fractionValue();
 }
 
 bits.forEach((node) => {
