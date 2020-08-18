@@ -2,6 +2,7 @@ const signValueSpan = document.querySelector('#sign-value')
 const exponentValueSpan = document.querySelector('#exponent-value')
 const fractionValueSpan = document.querySelector('#fraction-value')
 const realValueSpan = document.querySelector('#real-value')
+const equationSpan = document.querySelector('#equation')
 const formSpan = document.querySelector('#form')
 const bits = document.querySelectorAll('.bit')
 
@@ -90,6 +91,7 @@ const renderFloatingPoint = (fp) => {
   realValueSpan.innerText = fp.value;
   exponentValueSpan.innerText = fp.exponentValue();
   fractionValueSpan.innerText = fp.type == FPTypes.NORMALISED ? 1 + fp.fractionValue() : fp.fractionValue();
+  equationSpan.style.display = fp.type == FPTypes.SPECIAL ? 'none' : 'inline';
 }
 
 bits.forEach((node) => {
