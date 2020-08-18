@@ -14,9 +14,20 @@
     <h1>How does floating point encoding work?</h1>
 
     <p>
-      The floating point standard bit-encodes real numbers in the form
+      The IEEE floating point standard bit-encodes real numbers in the form
       <h2>\[V = -1^S * F * 2^E\]</h2>
       It does so by dividing up the allocated memory space into a <span class="sign-color">sign bit</span>, <span class="exponent-color">exponent bits</span>, and <span class="fraction-color">fractional bits</span>.
+    </p>
+    <p class="sign-color">The number is considered negative if the sign bit is on.</p>
+    <p class="exponent-color">
+      The value of the exponent bits is determined by the unsigned value of those bits minus a bias value
+      which is determined by \[Bias = 2^{k-1} - 1\] In the example below, the bias value is 7. If none of
+      these bits are on then the number is <em>normalised</em> and this bias is subtracted from 1.
+    </p>
+    <p class="fraction-color">
+      The fraction bits are interpreted as a <em>binary fraction</em>, where the first bit after the point represents
+      0.5, the second represents 0.25, etc. If any of the exponent bits are on then the number is <em>normalised</em>
+      and a value of 1 is added to the fraction.
     </p>
     <p>
       Below is a binary representation of a floating point number for a fictional 8-bit computer. Try flipping different bits to see how they affect the value of the encoded number.
@@ -44,9 +55,6 @@
 
       <h2>Encoding form: <span id="form"></span></h2>
       <h2>-1<sup><span class="sign-color" id="sign-value"></span></sup> * <span class="fraction-color" id="fraction-value"></span> * 2<sup><span id="exponent-value" class="exponent-color"></span></sup> = <span id="real-value"></span></h2>
-    </div>
-    <div>
-      <p>Made by <a href="https://www.andysims.dev">Andrew Sims</a></p>
     </div>
   </div>
   <script src="index.js"></script>
